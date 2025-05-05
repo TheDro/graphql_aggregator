@@ -21,11 +21,58 @@ module Types
     # Add root-level fields here.
     # They will be entry points for queries on your schema.
 
-    # TODO: remove me
-    field :test_field, String, null: false,
-      description: "An example field added by the generator"
-    def test_field
-      "Hello World!"
+    # User queries
+    field :users, [Types::UserType], null: false,
+      description: "Returns a list of all users"
+    def users
+      User.all
+    end
+
+    field :user, Types::UserType, null: true,
+      description: "Find a user by ID" do
+      argument :id, ID, required: true
+    end
+    def user(id:)
+      User.find_by(id: id)
+    end
+
+    # Product queries
+    field :products, [Types::ProductType], null: false,
+      description: "Returns a list of all products"
+    def products
+      Product.all
+    end
+
+    field :product, Types::ProductType, null: true,
+      description: "Find a product by ID" do
+      argument :id, ID, required: true
+    end
+    def product(id:)
+      Product.find_by(id: id)
+    end
+
+    # Basket queries
+    field :baskets, [Types::BasketType], null: false,
+      description: "Returns a list of all baskets"
+    def baskets
+      Basket.all
+    end
+
+    field :basket, Types::BasketType, null: true,
+      description: "Find a basket by ID" do
+      argument :id, ID, required: true
+    end
+    def basket(id:)
+      Basket.find_by(id: id)
+    end
+
+    # Current user query - to be used with authentication
+    field :me, Types::UserType, null: true,
+      description: "Returns the currently authenticated user"
+    def me
+      # In a real app, you would return the current user based on authorization
+      # For now, return the test user
+      User.first
     end
   end
 end
