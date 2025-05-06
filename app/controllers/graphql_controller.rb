@@ -14,8 +14,10 @@ class GraphqlController < ApplicationController
       # Query context goes here, for example:
       # current_user: current_user,
     }
+    Goldiloader.enabled = false
     result = GraphqlAggSchema.execute(query, variables: variables, context: context, operation_name: operation_name)
     render json: result
+    Goldiloader.enabled = false
   rescue StandardError => e
     raise e unless Rails.env.development?
     handle_error_in_development(e)

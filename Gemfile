@@ -69,3 +69,7 @@ end
 # Use GraphQL API [https://graphql-ruby.org]
 gem "graphql"
 gem "graphiql-rails", group: :development
+gem "graphql-batch"
+gem "goldiloader"
+gem "pundit"
+gem "pry"
