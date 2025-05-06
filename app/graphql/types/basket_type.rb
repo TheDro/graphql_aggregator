@@ -12,17 +12,8 @@ module Types
     field :item_count, Integer, null: false, description: "The total number of items in the basket"
 
     def total
-      Loaders::SuperGoldiLoader.for(:total).load(object) do |objects|
-        auto_include_context = Goldiloader::AutoIncludeContext.new
-        auto_include_context.register_models(objects)
-        objects.each do |obj|
-          obj.auto_include_context =  auto_include_context
-        end
-      end.then do |object|
-        Goldiloader.enabled = true
-        result = object.total
-        Goldiloader.enabled = false
-        result
+      Loaders::SuperGoldiLoader.for(:total).wrap(object) do |object|
+        object.total
       end
     end
     
