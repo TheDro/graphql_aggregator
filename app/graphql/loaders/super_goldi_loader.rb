@@ -13,8 +13,8 @@ module Loaders
     def wrap(object, &block)
       load(object) do |objects|
         auto_include_context = Goldiloader::AutoIncludeContext.new
-        auto_include_context.register_models(objects)
-        objects.each do |obj|
+        auto_include_context.register_models(objects.flatten)
+        objects.flatten.each do |obj|
           obj.auto_include_context = auto_include_context
         end
       end.then do |obj|

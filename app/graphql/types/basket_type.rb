@@ -12,9 +12,13 @@ module Types
     field :item_count, Integer, null: false, description: "The total number of items in the basket"
 
     def total
-      Loaders::SuperGoldiLoader.for(:total).wrap(object) do |object|
-        object.total
+      ultra_wrap(object) do |basket|
+        basket.total
       end
+    end
+
+    def basket_products
+      ultra_load(object, :basket_products)
     end
     
     def item_count
