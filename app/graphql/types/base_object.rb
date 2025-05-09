@@ -21,12 +21,22 @@ module Types
     def ultra_load(object, field, scope: nil, auto_loader: true)
       model = object.class
       reflection = model.reflect_on_association(field)
-      promise = if reflection.macro == :belongs_to
+      promise = if reflection.is_a?(ActiveRecord::Reflection::BelongsToReflection)
         Loaders::RecordLoader.for(reflection.klass, scope: scope)
           .load(object.public_send(reflection.foreign_key))
-      elsif reflection.macro == :has_many
+      elsif reflection.is_a?(ActiveRecord::Reflection::HasManyReflection)
         Loaders::RecordLoader.for(reflection.klass, column: reflection.foreign_key)
           .load(object.public_send(reflection.active_record_primary_key))
+      elsif reflection.is_a?(ActiveRecord::Reflection::ThroughReflection)
+        # Some of these methods are probably wrong, but happen to be the correct value
+        Loaders::RecordLoader.for(reflection.through_reflection.klass, column: reflection.through_reflection.foreign_key)
+          .load(object.public_send(reflection.through_reflection.active_record_primary_key))
+          .then do |intermediates|
+            keys = intermediates.map { |record| record.public_send(reflection.association_foreign_key) }
+            Loaders::RecordLoader.for(reflection.klass, scope: scope).load_many(keys)
+          end.then do |grouped_records|
+            grouped_records.flatten
+          end
       end
 
       if !auto_loader

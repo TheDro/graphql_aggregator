@@ -17,6 +17,10 @@ module Types
       end
     end
 
+    def products
+      ultra_load(object, :products)
+    end
+
     def basket_products
       ultra_load(object, :basket_products)
     end
