@@ -6,8 +6,18 @@ module Types
     field :price, Float, null: false
     field :stock_quantity, Integer, null: false
     field :image_url, String, null: true
+    field :ingredients, [Types::IngredientType], null: false
+    field :product_ingredients, [Types::ProductIngredientType], null: false
     field :created_at, GraphQL::Types::ISO8601DateTime, null: false
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
+    
+    def ingredients
+      ultra_load(object, :ingredients)
+    end
+    
+    def product_ingredients
+      ultra_load(object, :product_ingredients)
+    end
     
     field :baskets, [Types::BasketType], null: false
     def baskets

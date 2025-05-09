@@ -27,6 +27,23 @@ module Types
     def users
       User.all
     end
+    
+        field :ingredients, [Types::IngredientType], null: false do
+          description "Get all ingredients"
+        end
+    
+        def ingredients
+          Ingredient.all
+        end
+    
+        field :ingredient, Types::IngredientType, null: true do
+          description "Get a specific ingredient by ID"
+          argument :id, ID, required: true
+        end
+    
+        def ingredient(id:)
+          Ingredient.find_by(id: id)
+        end
 
     field :user, Types::UserType, null: true,
       description: "Find a user by ID" do

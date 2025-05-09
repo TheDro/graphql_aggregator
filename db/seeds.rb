@@ -9,54 +9,61 @@ user = User.create!(
   password_confirmation: 'password123',
   first_name: 'Test',
   last_name: 'User'
-)
+) if User.count == 0
+
+require_relative "./seeds/products"
+require_relative "./seeds/ingredients"
+require_relative "./seeds/product_ingredients"
 
 # Create products
-products = [
-  {
-    name: 'Laptop',
-    description: 'High-performance laptop for all your computing needs',
-    price: 1299.99,
-    stock_quantity: 10,
-    image_url: 'https://example.com/laptop.jpg'
-  },
-  {
-    name: 'Smartphone',
-    description: 'Latest smartphone with advanced camera features',
-    price: 899.99,
-    stock_quantity: 15,
-    image_url: 'https://example.com/smartphone.jpg'
-  },
-  {
-    name: 'Headphones',
-    description: 'Noise-cancelling headphones for immersive audio experience',
-    price: 299.99,
-    stock_quantity: 20,
-    image_url: 'https://example.com/headphones.jpg'
-  },
-  {
-    name: 'Tablet',
-    description: 'Lightweight tablet perfect for reading and browsing',
-    price: 499.99,
-    stock_quantity: 8,
-    image_url: 'https://example.com/tablet.jpg'
-  },
-  {
-    name: 'Smartwatch',
-    description: 'Feature-rich smartwatch with fitness tracking capabilities',
-    price: 249.99,
-    stock_quantity: 12,
-    image_url: 'https://example.com/smartwatch.jpg'
-  }
-]
-
-products.each do |product_attrs|
-  Product.create!(product_attrs)
-end
-
-# Add some products to the user's basket
-basket = user.basket
-basket.add_product(Product.first, 2)
-basket.add_product(Product.third, 1)
+# products = [
+#   {
+#     name: 'Laptop',
+#     description: 'High-performance laptop for all your computing needs',
+#     price: 1299.99,
+#     stock_quantity: 10,
+#     image_url: 'https://example.com/laptop.jpg'
+#   },
+#   {
+#     name: 'Smartphone',
+#     description: 'Latest smartphone with advanced camera features',
+#     price: 899.99,
+#     stock_quantity: 15,
+#     image_url: 'https://example.com/smartphone.jpg'
+#   },
+#   {
+#     name: 'Headphones',
+#     description: 'Noise-cancelling headphones for immersive audio experience',
+#     price: 299.99,
+#     stock_quantity: 20,
+#     image_url: 'https://example.com/headphones.jpg'
+#   },
+#   {
+#     name: 'Tablet',
+#     description: 'Lightweight tablet perfect for reading and browsing',
+#     price: 499.99,
+#     stock_quantity: 8,
+#     image_url: 'https://example.com/tablet.jpg'
+#   },
+#   {
+#     name: 'Smartwatch',
+#     description: 'Feature-rich smartwatch with fitness tracking capabilities',
+#     price: 249.99,
+#     stock_quantity: 12,
+#     image_url: 'https://example.com/smartwatch.jpg'
+#   }
+# ]
+#
+# if Product.count == 0
+#   products.each do |product_attrs|
+#     Product.create!(product_attrs)
+#   end
+# end
+#
+#
+# # Add some products to the user's basket
+# basket = User.first.basket
+# basket.add_product(Product.first, 2)
+# basket.add_product(Product.third, 1)
 
 puts "Seeded database with #{User.count} users, #{Product.count} products, and #{BasketProduct.count} basket products."
