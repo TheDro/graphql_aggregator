@@ -10,7 +10,14 @@ module Types
     field :product_ingredients, [Types::ProductIngredientType], null: false
     field :created_at, GraphQL::Types::ISO8601DateTime, null: false
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
-    
+    field :weight, Float, null: false
+
+    def weight
+      ultra_wrap(object) do |product|
+        product.ingredients.sum(&:weight)
+      end
+    end
+
     def ingredients
       ultra_load(object, :ingredients)
     end
